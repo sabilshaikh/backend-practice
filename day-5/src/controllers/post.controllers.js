@@ -3,7 +3,9 @@ const postModel = require("../models/post.model");
 const imgKit = require("../config/imageKit");
 const { toFile } = require("@imagekit/nodejs");
 const jwt = require("jsonwebtoken");
-const { post } = require("../app");
+// const { post } = require("../app");
+
+// create posts
 
 async function createPostController(req, res) {
     try {
@@ -16,16 +18,16 @@ async function createPostController(req, res) {
         }
 
        
-        const token = req.cookies.jwt_token;
+        // const token = req.cookies.jwt_token;
 
-        if (!token) {
-            return res.status(401).json({
-                message: "Unauthorized",
-            });
-        }
+        // if (!token) {
+        //     return res.status(401).json({
+        //         message: "Unauthorized",
+        //     });
+        // }
 
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
        
         const uploadedFile = await imgKit.files.upload({
@@ -41,7 +43,7 @@ async function createPostController(req, res) {
         const post = await postModel.create({
             caption: req.body.caption,
             imageUrl: uploadedFile.url,
-            user: decoded.id,
+            user: req.user.id,
         });
 
         return res.status(201).json({
@@ -58,6 +60,7 @@ async function createPostController(req, res) {
     }
 }
 
+// get posts
 async function getPostController(req , res){
 
     if(!req.cookies.jwt_token){
@@ -66,22 +69,22 @@ async function getPostController(req , res){
         })
     }
 
- const jwt_token = req.cookies.jwt_token;
+//  const jwt_token = req.cookies.jwt_token;
 
- let decoded;
+//  let decoded;
  
-try{
-    decoded = jwt.verify(jwt_token , process.env.JWT_SECRET);
+// try{
+//     decoded = jwt.verify(jwt_token , process.env.JWT_SECRET);
 
     
-}catch(err){
-    return res.status(401).json({
-        message : "unauthorized user"
-    })
-}
+// }catch(err){
+//     return res.status(401).json({
+//         message : "unauthorized user"
+//     })
+// }
 
 const postsData = await postModel.find({
-    user : decoded.id
+    user : req.user.id
 })
 
 res.status(200).json({
@@ -93,26 +96,28 @@ res.status(200).json({
 }
 
 
+// get posts of authorized person
+
 async function getPostDetailsController(req, res) {
 
-    const token = req.cookies.jwt_token
+    // const token = req.cookies.jwt_token
 
-    if (!token) {
-        return res.status(401).json({
-            message: "UnAuthorized Access"
-        })
-    }
+    // if (!token) {
+    //     return res.status(401).json({
+    //         message: "UnAuthorized Access"
+    //     })
+    // }
 
-    let decoded
+    // let decoded
 
-    try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET)
-    } catch (err) {
-        return res.status(401).json({
-            message: "Invalid Token"
-        })
-    }
-    const userId = decoded.id
+    // try {
+    //     decoded = jwt.verify(token, process.env.JWT_SECRET)
+    // } catch (err) {
+    //     return res.status(401).json({
+    //         message: "Invalid Token"
+    //     })
+    // }
+    const userId = req.user.id
     const postId = req.params.postId
 
     const post = await postModel.findById(postId)

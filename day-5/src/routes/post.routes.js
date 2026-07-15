@@ -5,7 +5,7 @@ const express = require("express");
 const postRouter = express.Router();
 const multer = require("multer");
 const postController = require("../controllers/post.controllers");
-// const { post } = require("./auth.routes");
+
 const identifyUsers = require("../middelwares/auth.middelware")
 
 const upload = multer({

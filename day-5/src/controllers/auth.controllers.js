@@ -88,6 +88,9 @@ async function loginController (req , res) {
         })
     }
 
+
+    
+
 const checkPassword = await bcrypt.compare(password , isUserExists.password)
 
 if(!checkPassword){
@@ -97,7 +100,11 @@ if(!checkPassword){
 }
 
 const token = jwt.sign(
-    {id : isUserExists._id},
+    {
+        id : isUserExists._id,
+        username : isUserExists.userName
+
+    },
     process.env.JWT_SECRET,
     {expiresIn : "1d"}
 )

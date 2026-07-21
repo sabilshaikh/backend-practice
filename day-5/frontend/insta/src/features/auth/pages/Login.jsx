@@ -2,11 +2,21 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../style/style.css";
 import axios from "axios";
+import { useAuth } from "../hooks/UseAuth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 
     const [username, setUserName] =  useState("")
     const [password , setPassword] = useState("")
+
+    const {handleLogin , loading} = useAuth()
+    const navigate = useNavigate()
+    if(loading){
+      return (
+        <h1 className="text-white text-4xl">Loading ...</h1>
+      )
+    }
 
   return (
     <div>
@@ -19,7 +29,10 @@ const Login = () => {
 
  onSubmit={(e)=>{
             e.preventDefault()
-
+handleLogin(username , password).then((res)=>{
+  console.log(res)
+  navigate("/")
+})
           
           axios.post("http://localhost:3000/api/auth/login",{
             userData : username,
@@ -28,6 +41,7 @@ const Login = () => {
           {withCredentials : true}
           ).then((res) =>{
             console.log(res)
+            
           })
 
           }
@@ -89,26 +103,3 @@ const Login = () => {
 };
 
 export default Login;
-
-//   return (
-//     <div>
-
-// <main>
-
-// <h1 w-full bg-red-500>Login</h1>
-
-// <form action="">
-
-// <input type="text" name='username' placeholder='Enter username' />
-// <input type="text" name='password' placeholder='Enter password' />
-
-// <button>Login</button>
-
-// <p>Don't have an account ? <Link to="/register">Register</Link></p>
-
-// </form>
-
-// </main>
-
-//     </div>
-//   )

@@ -1,24 +1,4 @@
 @import "tailwindcss";
 
  
-          /* axios.post("http://localhost:3000/api/auth/login",{
-            userData : username,
-            password : password
-          },
-          {withCredentials : true}
-          ).then((res) =>{
-            console.log(res)
-          }) */
-
-
-          
-    /* axios.post("http://localhost:3000/api/auth/register",{
-        userName : username,
-        email : email,
-        password : password,
-        bio : "hello from fronend"
-    }).then((res)=>{
-        console.log(res.data)
-    }) */
-
-
+        

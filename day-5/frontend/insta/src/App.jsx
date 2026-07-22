@@ -1,22 +1,26 @@
 import React from 'react'
-import "../src/features/auth/style/style.css"
-import { Routes , Route } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Login from './features/auth/pages/Login'
 import Register from './features/auth/pages/Register'
 
+
+
+
 const App = () => {
   return (
-<div className='h-screen w-screen bg-[#0b0808]'>
+ <>
+
 
 <Routes>
 
-<Route path="/" element={<Login/>}/>
-<Route path="/login" element={<Login/>}/>
-<Route path='/register' element={<Register/>}  />
+<Route path='/' element={<h1 className='text-5xl text-green-800 bg-black h-screen w-screen flex justify-center items-center' > Welcome to the page </h1>}/>
+
+<Route path="/login" element={<Login/>} />
+<Route path="/register" element={<Register/>} />
 
 </Routes>
 
-</div>
+ </>
   )
 }
 

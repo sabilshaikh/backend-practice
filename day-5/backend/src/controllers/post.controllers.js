@@ -3,6 +3,7 @@ const postModel = require("../models/post.model");
 const imgKit = require("../config/imageKit");
 const { toFile } = require("@imagekit/nodejs");
 const jwt = require("jsonwebtoken");
+const likeModel = require("../models/like.model")
 // const { post } = require("../app");
 
 // create posts
@@ -146,12 +147,89 @@ async function getPostDetailsController(req, res) {
 }
 
 
+// like unlike 
+
+async function likePostController(req, res) {
+
+    const username = req.user.username
+    const postId = req.params.postId
+
+    const post = await postModel.findById(postId)
+
+    if (!post) {
+        return res.status(404).json({
+            message: "Post not found."
+        })
+    }
+
+    const like = await likeModel.create({
+        post: postId,
+        user: username
+    })
+
+    res.status(200).json({
+        message: "Post liked successfully.",
+        like
+    })
+
+}
+
+
+async function unLikePostController(req, res) {
+    const postId = req.params.postId
+    const username = req.user.username
+
+    const isLiked = await likeModel.findOne({
+        post: postId,
+        user: username
+    })
+
+    if (!isLiked) {
+        return res.status(400).json({
+            message: "Post didn't like"
+        })
+    }
+
+    await likeModel.findOneAndDelete({ _id: isLiked._id })
+
+    return res.status(200).json({
+        message: "post un liked successfully."
+    })
+}
+
+
+async function getFeedController(req, res) {
+
+    const user = req.user
+
+    const posts = await Promise.all((await postModel.find({}).populate("user").lean())
+        .map(async (post) => {
+            const isLiked = await likeModel.findOne({
+                user: user.userName,
+                post: post._id
+            })
+
+            post.isLiked = Boolean(isLiked)
+
+            return post
+        }))
+
+
+
+    res.status(200).json({
+        message: "posts fetched successfully.",
+        posts
+    })
+}
+
 
 
 module.exports = {
     createPostController,
     getPostController,
-    getPostDetailsController
+    getPostDetailsController,
+    likePostController,
+    unLikePostController,
+    getFeedController
 };
-
 

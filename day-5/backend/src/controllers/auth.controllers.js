@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken")
 async function registeController (req , res) {
     const {userName , email , password , bio  } = req.body;
 
-  if(!userName || !email || !password || !bio){
+  if(!userName || !email || !password ){
    return res.status(400).json({
         message : "all fields are rquired"
     })
@@ -77,7 +77,7 @@ async function loginController (req , res) {
             {email : userData},
            {userName : userData}
         ]
-    })
+    }).select("+password")
 
   
     

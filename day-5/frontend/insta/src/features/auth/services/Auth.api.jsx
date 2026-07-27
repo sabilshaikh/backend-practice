@@ -21,11 +21,12 @@ export const login = async (userData, password) => {
 };
 
 // Register
-export const register = async (username, email, password) => {
+export const register = async (userName, email, password) => {
   const response = await api.post("/register", {
-    username,
+    userName,
     email,
     password,
+
   });
 
   return response.data;

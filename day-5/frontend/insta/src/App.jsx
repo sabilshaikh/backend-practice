@@ -13,8 +13,7 @@ const App = () => {
 
 <Routes>
 
-<Route path='/' element={<h1 className='text-5xl text-green-800 bg-black h-screen w-screen flex justify-center items-center' > Welcome to the page </h1>}/>
-
+<Route path='/' element={ <h1>welcome to the page</h1>} />
 <Route path="/login" element={<Login/>} />
 <Route path="/register" element={<Register/>} />
 

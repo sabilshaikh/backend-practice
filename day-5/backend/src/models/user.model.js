@@ -16,15 +16,16 @@ const userSchema = new mongoose.Schema({
 
     password : {
         type : String ,
-        required : true
+        required : true,
+        select : false
     },
 
     bio : String ,
 
-    // profilePicture : {
-    //     type : String ,
-    //     default : "this is demo profile "
-    // }
+    profilePicture : {
+        type : String ,
+        default : "this is demo profile "
+    }
 
 })
 

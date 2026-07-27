@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import "../style/style.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
   const { loading, handleLogin } = useAuth();

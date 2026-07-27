@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import "../style/style.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 const Register = () => {
   const { loading, handleRegister } = useAuth();
 
-  const [username, setUsername] = useState("");
+  const [userName, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,12 +18,12 @@ const Register = () => {
     e.preventDefault();
 
     // Basic Validation
-    if (!username || !email || !password) {
+    if (!userName || !email || !password) {
       alert("Please fill all fields");
       return;
     }
 
-    const success = await handleRegister(username, email, password);
+    const success = await handleRegister(userName, email, password);
 
     if (success) {
       console.log("User Registered Successfully");
@@ -43,7 +43,7 @@ const Register = () => {
           <input
             type="text"
             placeholder="Enter username"
-            value={username}
+            value={userName}
             onChange={(e) => setUsername(e.target.value)}
             className="w-full p-3 rounded-3xl bg-white text-black"
           />

@@ -60,18 +60,27 @@ return res.status(201).json({
 
 async function loginController(req , res) {
 
-     const { email, password, username } = req.body;
+
+
+
+    const {userData, password } = req.body;
+
 
     const user = await userModel.findOne({
-        $or: [
-            { email },
-            { username }
-        ]
-    }).select("+password")
+       $or:[
+        {email : userData},
+        {username : userData}
+       ]
+    }).select("+password");
+
+
+    
+
+  
 
     if (!user) {
         return res.status(400).json({
-            message: "Invalid credentials"
+            message: "user not found"
         })
     }
 
@@ -80,14 +89,14 @@ async function loginController(req , res) {
 
     if (!isPasswordValid) {
         return res.status(400).json({
-            message: "Invalid credentials"
+            message: "wrong password"
         })
     }
 
     const token = jwt.sign(
         {
             id: user._id,
-            username: user.username
+        
         },
         process.env.JWT_SECRET,
         {
@@ -95,18 +104,14 @@ async function loginController(req , res) {
         }
     )
 
-    console.log("Login token",token);
+
     
 
     res.cookie("token", token)
 
     return res.status(200).json({
         message: "User logged in successfully",
-        user: {
-            id: user._id,
-            username: user.username,
-            email: user.email
-        }
+        user
     })
 
 
